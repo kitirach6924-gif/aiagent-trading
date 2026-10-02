@@ -44,6 +44,13 @@ function App() {
 
   useEffect(() => watchAuth((u) => { setUser(u ? { email: u.email } : null); setChecking(false); }), []);
   useEffect(() => { if (!firebaseConfigured) setChecking(false); }, []);
+  // Safety net: never stay on "Loading…" forever. If Firebase auth never
+  // resolves (blocked network, init stall, storage disabled) fall through to
+  // the login screen after a short grace period.
+  useEffect(() => {
+    const t = setTimeout(() => setChecking(false), 4000);
+    return () => clearTimeout(t);
+  }, []);
   useEffect(() => { live.connect(); }, []);
 
   if (checking) return <div className="center">Loading…</div>;

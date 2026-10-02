@@ -35,6 +35,7 @@ from app.core.risk import RiskGate
 from app.core.strategies import StrategyRegistry
 from app.integrations.firestore_mirror import mirror
 from app.integrations.telegram import TelegramNotifier
+from app.integrations.telegram_bot import build_bot as build_telegram_bot
 from app.mt5.factory import make_connector
 from app.mt5.reconnect import ConnectorSupervisor
 
@@ -97,6 +98,7 @@ decision_agent = DecisionAgent(connector, StrategyAgent(_engine := __import__(
     "app.core.strategy_engine", fromlist=["StrategyEngine"]).StrategyEngine(registry), registry), registry)
 loop = TradingLoop(db, connector, registry, journal, risk_gate, notifier)
 loop.bind_agents(decision_agent)
+telegram_bot = build_telegram_bot(chat, notifier)
 
 
 async def _audit_and_broadcast(event: Event) -> None:
@@ -194,6 +196,7 @@ async def startup() -> None:
     _rt_tasks.append(asyncio.create_task(account_snapshot_loop(connector)))
     _rt_tasks.append(asyncio.create_task(make_heartbeat_loop(lambda: loop, connector, settings)()))
     _rt_tasks.append(asyncio.create_task(_firestore_status_loop()))
+    telegram_bot.start()
 
 
 async def _firestore_status_loop() -> None:
@@ -229,6 +232,7 @@ async def _firestore_status_loop() -> None:
 @app.on_event("shutdown")
 async def shutdown() -> None:
     await loop.stop()
+    await telegram_bot.stop()
     for t in _rt_tasks:
         t.cancel()
 
@@ -719,6 +723,12 @@ async def telegram_status(user: dict = Depends(require_user)) -> dict:
         "configured": notifier.configured,
         "chat_id_set": bool(settings.telegram_chat_id),
         "token_set": bool(settings.telegram_bot_token),
+        "bot": {
+            "configured": telegram_bot.configured,
+            "running": bool(telegram_bot._task and not telegram_bot._task.done()),
+            "read_only": telegram_bot.read_only,
+            "allowed_chat_ids": sorted(telegram_bot.allowed_chat_ids),
+        },
     }
 
 

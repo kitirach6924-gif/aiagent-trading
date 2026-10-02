@@ -28,6 +28,9 @@ class TelegramNotifier:
         self._dedup_max_keys = self.DEDUP_MAX_KEYS
         # key -> [last_sent_monotonic, suppressed_count]
         self._recent: dict[tuple[str, str], list] = {}
+        # Set by telegram_bot.build_bot so /quiet in the chat can silence pushed
+        # events. None = never muted.
+        self.mute_check = None
 
     @property
     def configured(self) -> bool:
@@ -36,6 +39,12 @@ class TelegramNotifier:
     def send(self, text: str) -> bool:
         if not self.configured:
             return False
+        if self.mute_check is not None:
+            try:
+                if self.mute_check():
+                    return False
+            except Exception:  # noqa: BLE001 - a mute-check bug must not block alerts
+                pass
         try:
             url = f"https://api.telegram.org/bot{self.token}/sendMessage"
             data = urllib.parse.urlencode({"chat_id": self.chat_id, "text": text, "parse_mode": "HTML"}).encode()

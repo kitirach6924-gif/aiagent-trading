@@ -30,6 +30,36 @@ TELEGRAM_BOT_TOKEN=1234567890:AAHxxx...
 TELEGRAM_CHAT_ID=812345678
 ```
 
+## ขั้น 3.5 — เปิดโหมด "ถามบอทได้" (inbound bot)
+
+ข้างบนคือการ **ส่ง event ออก** (notifier) ส่วนนี้คือการ **ถามเข้ามา** —
+บอทจะ long-poll `getUpdates` แล้วส่งคำถามเข้า ChatAgent ตัวเดียวกับที่หน้าเว็บใช้
+(อ่านสถิติ/ราคา/position/strategy สดจาก MT5) แล้วตอบกลับมา
+
+ตั้งค่าเพิ่มใน `backend/.env`:
+```text
+TELEGRAM_BOT_ALLOWED_CHAT_IDS=812345678
+TELEGRAM_BOT_READ_ONLY=true
+```
+แล้ว restart backend — ดูสถานะบอทได้ที่ `GET /api/telegram/status` (`bot.read_only`,
+`bot.running`) หรือ log ตอนบูตจะขึ้น `[telegram_bot] online · read_only=True`
+
+### ถามได้อะไร
+- คำถามธรรมดา: `สถานะตอนนี้`, `วันนี้เทรดกี่ครั้ง`, `เปิด position ไหม`,
+  `ทำไมยังไม่เข้า BUY`, `ราคาทองตอนนี้`, `สถิติ/performance`
+- คำสั่ง: `/start` `/help` · `/report` (สรุปวันนี้) · `/status` ·
+  `/quiet` (หยุด event) · `/notify` (เปิดคืน)
+- ทุกคำตอบขึ้นต้นด้วยบล็อก "บริบทปัจจุบัน" (balance/equity/ราคา/%K-%D/สัญญาณ/positions)
+  ด้วย — ถ้าไม่เห็นบล็อกนี้ แปลว่า MT5 bridge ล่ม
+
+### ข้อจำกัดด้านความปลอดภัย (ตั้งใจทำ)
+1. **allowlist** — ข้อความจาก chat นอกรายการถูกปฏิเสธก่อนถึง agent ใดๆ และ group ถูกมองข้าม
+2. **read-only** — คำสั่งที่ classify เป็น CONTROL/STRATEGY ถูกปฏิเสธก่อนถึง handler
+   ที่จะเซ็ต `paused`/`emergency_stop` หรือแตะ strategy registry ดังนั้นข้อความจากมือถือ
+   **หยุดเทรดไม่ได้** ต้องที่หน้าเว็บหรือสั่ง Titan ตรงๆ
+   (ถ้าจะเปิดสิทธิ์คุม ให้ตั้ง `TELEGRAM_BOT_READ_ONLY=false` — และรับความเสี่ยงเอง)
+3. **ไม่กระทบ trading** — ทุก error ใน loop ถูกกลืนและ retry กลับ บอทล่มก็ไม่ทำให้ agent หยุด
+
 ## ขั้น 4 — ทดสอบส่งจริง
 
 ทางเลือก A (dashboard): หน้า **System → Telegram** → ใส่ token/chat_id ช่องทดสอบ (ไม่บันทึกถาวร) → กด **ส่งข้อความทดสอบ** → ต้องได้แชท "✅ AI_MT5 test"

@@ -88,6 +88,15 @@ class Settings:
     # ---- Telegram ----
     telegram_bot_token: str = os.environ.get("TELEGRAM_BOT_TOKEN", "")
     telegram_chat_id: str = os.environ.get("TELEGRAM_CHAT_ID", "")
+    # ---- Telegram INBOUND bot (questions -> ChatAgent) ----
+    # Allowlist. Falls back to TELEGRAM_CHAT_ID when empty, but an explicit list
+    # is what you want once more than one chat exists.
+    telegram_bot_allowed_chat_ids: str = os.environ.get("TELEGRAM_BOT_ALLOWED_CHAT_IDS", "")
+    # Read-only is the default and should stay that way: the bot can read state
+    # and explain, but CONTROL/STRATEGY intents are refused before they can flip
+    # paused/emergency_stop or edit the strategy registry. Turning this off makes
+    # a phone message able to stop trading.
+    telegram_bot_read_only: bool = _bool("TELEGRAM_BOT_READ_ONLY", True)
 
     # ---- AI / Model router (OpenRouter-compatible) ----
     llm_base_url: str = os.environ.get("LLM_BASE_URL", "https://openrouter.ai/api/v1")
