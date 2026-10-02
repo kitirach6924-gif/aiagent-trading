@@ -88,15 +88,15 @@ function EquityChart({ curve }: { curve: EquityCurve | null }) {
   useEffect(() => {
     if (!ref.current) return;
     const chart = createChart(ref.current, {
-      layout: { background: { type: ColorType.Solid, color: "#0e1117" }, textColor: "#9aa4b2", fontSize: 11 },
-      grid: { vertLines: { color: "#1c2230" }, horzLines: { color: "#1c2230" } },
-      rightPriceScale: { borderColor: "#262d3b" },
-      timeScale: { borderColor: "#262d3b", timeVisible: true },
+      layout: { background: { type: ColorType.Solid, color: "transparent" }, textColor: "#857b9e", fontSize: 11 },
+      grid: { vertLines: { color: "rgba(124,92,214,0.08)" }, horzLines: { color: "rgba(124,92,214,0.08)" } },
+      rightPriceScale: { borderColor: "rgba(124,92,214,0.14)" },
+      timeScale: { borderColor: "rgba(124,92,214,0.14)", timeVisible: true },
       autoSize: true,
     });
     chartRef.current = chart;
-    eqRef.current = chart.addAreaSeries({ lineColor: "#3fb950", topColor: "rgba(63,185,80,0.2)", lineWidth: 2, title: "Equity" });
-    ddRef.current = chart.addAreaSeries({ lineColor: "#f85149", topColor: "rgba(248,81,73,0.15)", lineWidth: 1, title: "Drawdown" });
+    eqRef.current = chart.addAreaSeries({ lineColor: "#17a673", topColor: "rgba(23,166,115,0.18)", lineWidth: 2, title: "Equity" });
+    ddRef.current = chart.addAreaSeries({ lineColor: "#e05561", topColor: "rgba(224,85,97,0.14)", lineWidth: 1, title: "Drawdown" });
     return () => chart.remove();
   }, []);
 

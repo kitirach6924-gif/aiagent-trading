@@ -76,7 +76,7 @@ export default function Dashboard() {
       .map((t) => ({
         time: (new Date(t.ts_open).getTime() / 1000) as unknown as Time,
         position: t.side === "BUY" ? ("belowBar" as const) : ("aboveBar" as const),
-        color: t.side === "BUY" ? "#3fb950" : "#f85149",
+        color: t.side === "BUY" ? "#17a673" : "#e05561",
         shape: t.side === "BUY" ? ("arrowUp" as const) : ("arrowDown" as const),
         text: `${t.side} ${t.lot}`,
         tradeId: t.id,

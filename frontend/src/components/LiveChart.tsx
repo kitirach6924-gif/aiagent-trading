@@ -39,29 +39,30 @@ export default function LiveChart({ symbol, tick, markers, sltp, onMarkerClick }
     if (!chartRef.current) return;
     const chart = createChart(chartRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: "#0e1117" },
-        textColor: "#9aa4b2",
+        // transparent so the glass card behind the chart shows through
+        background: { type: ColorType.Solid, color: "transparent" },
+        textColor: "#857b9e",
         fontSize: 11,
       },
       grid: {
-        vertLines: { color: "#1c2230" },
-        horzLines: { color: "#1c2230" },
+        vertLines: { color: "rgba(124,92,214,0.08)" },
+        horzLines: { color: "rgba(124,92,214,0.08)" },
       },
       crosshair: { mode: 1 },
-      rightPriceScale: { borderColor: "#262d3b" },
-      timeScale: { borderColor: "#262d3b", timeVisible: true, secondsVisible: false },
+      rightPriceScale: { borderColor: "rgba(124,92,214,0.14)" },
+      timeScale: { borderColor: "rgba(124,92,214,0.14)", timeVisible: true, secondsVisible: false },
       autoSize: true,
     });
     chartApi.current = chart;
     candleSeries.current = chart.addCandlestickSeries({
-      upColor: "#26a69a", downColor: "#ef5350",
-      borderUpColor: "#26a69a", borderDownColor: "#ef5350",
-      wickUpColor: "#26a69a", wickDownColor: "#ef5350",
+      upColor: "#17a673", downColor: "#e05561",
+      borderUpColor: "#17a673", borderDownColor: "#e05561",
+      wickUpColor: "#17a673", wickDownColor: "#e05561",
     });
     volumeSeries.current = chart.addHistogramSeries({
       priceFormat: { type: "volume" },
       priceScaleId: "vol",
-      color: "#2d3a4d",
+      color: "rgba(124,92,214,0.18)",
     });
     chart.priceScale("vol").applyOptions({ scaleMargins: { top: 0.85, bottom: 0 } });
 
@@ -93,7 +94,7 @@ export default function LiveChart({ symbol, tick, markers, sltp, onMarkerClick }
           res.candles.map((c: Candle) => ({
             time: (new Date(c.time).getTime() / 1000) as unknown as Time,
             value: c.tick_volume,
-            color: c.close >= c.open ? "#1d4d44" : "#5c2b2b",
+            color: c.close >= c.open ? "rgba(23,166,115,0.3)" : "rgba(224,85,97,0.28)",
           }))
         );
         setIndicators(res.indicators ?? {});
@@ -124,11 +125,11 @@ export default function LiveChart({ symbol, tick, markers, sltp, onMarkerClick }
       if (!values) continue;
       if (!lineSeries.current[name]) {
         const colors: Record<string, string> = {
-          RSI: "#c792ea", ATR: "#82aaff",
+          RSI: "#7c5cd6", ATR: "#3f7fd6",
         };
         const color = name.startsWith("EMA")
-          ? name === "EMA9" ? "#ffd54f" : "#4dd0e1"
-          : colors[name.replace(/\d+/g, "")] ?? "#888";
+          ? name === "EMA9" ? "#b8860b" : "#0f9aa8"
+          : colors[name.replace(/\d+/g, "")] ?? "#857b9e";
         lineSeries.current[name] = chart.addLineSeries({
           color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
           title: name,
@@ -177,9 +178,9 @@ export default function LiveChart({ symbol, tick, markers, sltp, onMarkerClick }
     if (!sltp?.sl && !sltp?.tp) return;
     const s = candleSeries.current;
     const lines: any[] = [];
-    if (sltp.entry) lines.push(s.createPriceLine({ price: sltp.entry, color: "#58a6ff", lineWidth: 1, title: "Entry" }));
-    if (sltp.sl) lines.push(s.createPriceLine({ price: sltp.sl, color: "#ef5350", lineWidth: 1, lineStyle: 2, title: "SL" }));
-    if (sltp.tp) lines.push(s.createPriceLine({ price: sltp.tp, color: "#3fb950", lineWidth: 1, lineStyle: 2, title: "TP" }));
+    if (sltp.entry) lines.push(s.createPriceLine({ price: sltp.entry, color: "#3f7fd6", lineWidth: 1, title: "Entry" }));
+    if (sltp.sl) lines.push(s.createPriceLine({ price: sltp.sl, color: "#e05561", lineWidth: 1, lineStyle: 2, title: "SL" }));
+    if (sltp.tp) lines.push(s.createPriceLine({ price: sltp.tp, color: "#17a673", lineWidth: 1, lineStyle: 2, title: "TP" }));
     return () => lines.forEach((l) => { try { s.removePriceLine(l); } catch { /* ignore */ } });
   }, [sltp?.sl, sltp?.tp, sltp?.entry]);
 

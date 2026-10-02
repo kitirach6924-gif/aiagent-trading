@@ -46,3 +46,25 @@ Thumbs.db
 
 # VPS pack artifacts (มี SA key ภายใน - ห้าม commit)
 dist/
+
+# Secrets — .env มี Telegram bot token, LLM key, service-account key
+.env
+*.env
+!.env.example
+**/.env
+backend/ai-mt5-backend-key.json
+service-account*.json
+
+# Build / deps
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.tsbuildinfo
+
+# Local data
+data/
+*.db
+*.db-journal
