@@ -1,0 +1,31 @@
+version: "3.9"
+
+# Trading core runs 24/7 on the VPS. The Firebase dashboard is hosted separately.
+services:
+  trading-core:
+    build:
+      context: ../backend
+      dockerfile: ../infra/backend.Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      - TRADING_MODE=DEMO
+      - LIVE_TRADING=false
+      - MT5_MODE=MCP
+      # NOTE: this `environment:` block overrides .env, so the effective values live HERE.
+      # host.docker.internal resolves to the VPS host on Linux Docker and cannot reach the
+      # Windows box. The MT5 MCP bridge runs on Windows, Tailscale-bound on this address.
+      - MT5_SERVER_HOST=100.69.186.8
+      - MT5_SERVER_PORT=8765
+      - MT5_BRIDGE_INPROCESS=false
+      - MT5_BRIDGE_TIMEOUT_SECONDS=15.0
+      # MT5_BRIDGE_AUTH_TOKEN comes from .env (secret, not inlined here)
+      # Strategy runs on M5 only.
+      - STRATEGY_TIMEFRAME=M5
+    ports:
+      - "8000:8000"
+    volumes:
+      - trading-data:/app/data
+
+volumes:
+  trading-data:

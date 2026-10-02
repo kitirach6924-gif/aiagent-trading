@@ -1,0 +1,20 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "trades",
+      "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "strategy_version", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" }]
+    },
+    {
+      "collectionGroup": "audit_logs",
+      "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "action", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" }]
+    },
+    {
+      "collectionGroup": "risk_events",
+      "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "symbol", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" }]
+    }
+  ],
+  "fieldOverrides": []
+}

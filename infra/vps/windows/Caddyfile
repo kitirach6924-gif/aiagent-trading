@@ -1,0 +1,26 @@
+# Caddy reverse proxy — HTTPS อัตโนมัติ (Let's Encrypt) สำหรับ trading-core
+# ติดตั้ง: winget install CaddyServer.Caddy  (หรือดาวน์โหลดจาก caddyserver.com)
+#
+# 1) แทน yourname.duckdns.org ด้วยโดเมนของคุณ
+# 2) เปิดพอร์ต 80+443 ใน firewall/NSG ของ VPS
+# 3) รัน: caddy start --config "C:\ai-mt5\infra\vps\windows\Caddyfile"
+#    Caddy ขอใบรับรอง HTTPS ให้เองและต่ออายุอัตโนมัติ
+
+yourname.duckdns.org {
+	encode gzip
+
+	# REST API
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8000
+	}
+
+	# WebSocket realtime
+	handle /ws {
+		reverse_proxy 127.0.0.1:8000
+	}
+
+	# อย่างอื่นบล็อก (หน้าเว็บอยู่บน Firebase Hosting แล้ว)
+	handle {
+		respond "AI_MT5 API — see https://my-first-project-24042.web.app" 200
+	}
+}

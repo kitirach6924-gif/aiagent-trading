@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Signed-in users may READ monitoring data; all writes come from the
+    // backend service account only (Admin SDK bypasses these rules).
+    match /system_status/{doc} { allow read: if request.auth != null; allow write: if false; }
+    match /trades/{doc}        { allow read: if request.auth != null; allow write: if false; }
+    match /positions/{doc}     { allow read: if request.auth != null; allow write: if false; }
+    match /statistics/{doc}    { allow read: if request.auth != null; allow write: if false; }
+    match /strategy_versions/{doc} { allow read: if request.auth != null; allow write: if false; }
+    match /audit_logs/{doc}    { allow read: if request.auth != null; allow write: if false; }
+    match /risk_events/{doc}   { allow read: if request.auth != null; allow write: if false; }
+    match /ai_messages/{doc}   { allow read: if request.auth != null; allow write: if false; }
+    match /ai_conversations/{doc} { allow read: if request.auth != null; allow write: if false; }
+    match /notifications/{doc} { allow read: if request.auth != null; allow write: if false; }
+    match /market_state/{doc}  { allow read: if request.auth != null; allow write: if false; }
+    match /orders/{doc}        { allow read: if request.auth != null; allow write: if false; }
+
+    // Default deny everything else
+    match /{document=**} { allow read, write: if false; }
+  }
+}

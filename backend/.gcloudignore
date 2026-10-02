@@ -1,0 +1,11 @@
+# Cloud Build ignore — ห้ามอัปโหลดสิ่งละเอียดอ่อนขึ้น build
+ai-mt5-backend-key.json
+*.key.json
+data/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+freebuff.log
+*.log
+.env

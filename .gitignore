@@ -1,0 +1,48 @@
+# ---- secrets / credentials (NEVER commit) ----
+.env
+.env.*
+!.env.example
+*.key.json
+*-key.json
+service-account*.json
+firebase-adminsdk-*.json
+infra/auth-users.json
+secrets/
+
+# ---- node ----
+node_modules/
+frontend/dist/
+.vercel/
+frontend/tsconfig.tsbuildinfo
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# ---- runtime data / logs ----
+backend/data/
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.err
+.freebuff/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# ---- local tooling ----
+workspace/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# VPS pack artifacts (มี SA key ภายใน - ห้าม commit)
+dist/
