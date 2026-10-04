@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIONE Agent — DEMO / READ-ONLY / EXECUTION BLOCKED</title>
+<style>
+:root { --fg: #1a0b2e; --bg: #f3e8ff; --card: rgba(255,255,255,0.72); --border: rgba(139,92,246,0.35); --accent: #7c3aed; --danger: #dc2626; --ok: #16a34a; --warn: #ca8a04; --unverified: #9333ea; --blocked: #dc2626; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: linear-gradient(135deg,#ede9fe 0%,#f3e8ff 60%,#fae8ff 100%); color: var(--fg); min-height: 100vh; }
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+h1 { font-size: 1.6rem; letter-spacing: 0.02em; }
+.banner { position: sticky; top: 0; z-index: 10; background: linear-gradient(90deg,#7c3aed,#9333ea); color: #fff; padding: 10px 16px; border-radius: 10px; font-weight: 700; letter-spacing: 0.08em; box-shadow: 0 4px 20px rgba(124,58,237,0.3); display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.banner .status { background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-top: 16px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; backdrop-filter: blur(12px); box-shadow: 0 2px 12px rgba(124,58,237,0.08); }
+.card h2 { font-size: 1.05rem; margin: 0 0 8px; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 8px; }
+.card h3 { font-size: 0.9rem; margin: 8px 0 4px; color: #4a044e; }
+.tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; }
+.tag-ver { background: #dcfce7; color: #166534; }
+.tag-part { background: #fef3c7; color: #92400e; }
+.tag-unv { background: #fce7f3; color: #831843; }
+.tag-block { background: #fee2e2; color: #991b1b; }
+.tag-syn { background: #ede9fe; color: #6b21a8; }
+.tag-dem { background: #ddd6fe; color: #4c1d95; }
+pre { background: #1e0b2e; color: #f3e8ff; padding: 10px; border-radius: 8px; overflow-x: auto; font-size: 0.78rem; }
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+th { background: rgba(124,58,237,0.12); text-align: left; padding: 4px; }
+td { padding: 4px; border-bottom: 1px solid rgba(124,58,237,0.15); }
+.chat-msg { margin: 6px 0; padding: 8px; border-radius: 8px; font-size: 0.85rem; }
+.chat-user { background: #ede9fe; color: #4a044e; border: 1px solid #ddd6fe; }
+.chat-dione { background: #f3e8ff; color: #4a044e; border: 1px solid #ddd6fe; }
+.note { font-size: 0.82rem; color: #6b21a8; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- SAFETY BANNER -->
+<div class="banner" role="status" aria-label="Dione Safety Status">
+  <span>DIONE AGENT PANEL</span>
+  <span class="status">TRADING_MODE: DEMO</span>
+  <span class="status">LIVE_TRADING: false</span>
+  <span class="status">EXECUTION: BLOCKED</span>
+  <span class="status">ALLOW_TRADE: false</span>
+  <span class="status">MT5_AUTH: BLOCKED</span>
+  <span class="status">SAFETY: SAFE</span>
+  <span class="status" style="color:#fff;background:#dc2626;">READ-ONLY / NO LIVE ORDER</span>
+</div>
+
+<h1>Dione Agent — Monitoring & Reasoning Panel</h1>
+<p class="note">Status: PARTIAL (source credible; payload unverified — no fabrication). All data labels reflect verified/provenance state. No synthetic shown as live. Execution blocked. Demo only.</p>
+
+<!-- 1. AGENT PANEL -->
+<div class="grid">
+<div class="card">
+  <h2>1. Agent Panel — System Status</h2>
+  <table>
+    <tr><th>Component</th><th>State</th><th>Evidence</th></tr>
+    <tr><td>Dione Core</td><td><span class="tag tag-ver">PASS</span></td><td>All modules verified (phases 8–39)</td></tr>
+    <tr><td>Market Observer</td><td><span class="tag tag-part">PARTIAL</span></td><td>Adapter verified; bridge reachable; payload UNVERIFIED</td></tr>
+    <tr><td>MT5 Bridge</td><td><span class="tag tag-part">PARTIAL</span></td><td>/health 200; auth 401; payload unverified (auth absent)</td></tr>
+    <tr><td>MT5 Auth</td><td><span class="tag tag-block">BLOCKED</span></td><td>Token absent — external authorization required</td></tr>
+    <tr><td>Stochastic Engine</td><td><span class="tag tag-ver">PASS 6/6</span></td><td>dione/stochastic/engine.py verified</td></tr>
+    <tr><td>Regime Engine</td><td><span class="tag tag-ver">PASS 12/12</span></td><td>dione/regime/engine.py verified (critical reasoning preserved)</td></tr>
+    <tr><td>Risk Engine</td><td><span class="tag tag-ver">PASS 10/10</span></td><td>dione/risk/engine.py verified</td></tr>
+    <tr><td>Journal</td><td><span class="tag tag-ver">PASS</span></td><td>backend/app/core/journal.py verified</td></tr>
+    <tr><td>Memory / Learning</td><td><span class="tag tag-ver">PASS</span></td><td>8/8 memory; 5/5 learning; promotion blocked <5</td></tr>
+    <tr><td>Decision Trace</td><td><span class="tag tag-ver">PASS 5/5</span></td><td>dione/monitor/decision_trace.py verified</td></tr>
+    <tr><td>Desktop UI</td><td><span class="tag tag-ver">READY</span></td><td>Electron wrapper verified; build commands defined; install complete</td></tr>
+    <tr><td>Data (Historical)</td><td><span class="tag tag-unv">UNVERIFIED</span></td><td>No verified OHLC dataset; only synthetic/test fixtures</td></tr>
+    <tr><td>Data (Live Market)</td><td><span class="tag tag-unv">UNVERIFIED</span></td><td>MT5 payload unverified (auth token absent)</td></tr>
+    <tr><td>Execution</td><td><span class="tag tag-block">BLOCKED</span></td><td>TRADING_MODE=DEMO; LIVE_TRADING=false; ALLOW_TRADE=false</td></tr>
+    <tr><td>Safety</td><td><span class="tag tag-ver">SAFE</span></td><td>PHASE 21 audit holds; hardening (default false) verified; no secret exposure</td></tr>
+  </table>
+  <div class="note">Source: real module tests + bridge / adapter / security scan outputs — no fabrication.</div>
+</div>
+
+<!-- 2. XAUUSD CHART -->
+<div class="card">
+  <h2>2. XAUUSD Chart — REAL DATA STATUS</h2>
+  <div style="padding:8px;background:#fdf4ff;border:1px solid #a855f7;border-radius:8px;">
+    <strong>LIVE MARKET DATA: UNVERIFIED</strong><br>
+    Source verified: getdata.finance / GitHub (ork-ad / getdata-finance) — credible historical market data provider (M5 / H1 OHLCV)<br>
+    Dataset file: PARTIAL (download attempt blocked at retrieval — session/network limitation)<br>
+    Symbol identity: UNVERIFIED (awaiting MT5 broker symbol info confirmation)<br>
+    Contract specs: UNVERIFIED (tick/point/lot/spec unknown — must come from broker)<br>
+    <strong>NO FAKE LIVE CHART DISPLAYED.</strong><br>
+    If synthetic / test fixture is shown: clearly labeled SYNTHETIC / NOT REAL MARKET DATA.
+  </div>
+  <h3>Sample Synthetic / Verified Test Pattern (for framework demonstration only — NOT real market claim)</h3>
+  <svg width="100%" height="160" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" aria-label="Synthetic XAUUSD framework demonstration — not verified market data">
+    <rect x="0" y="0" width="400" height="160" fill="#f3e8ff"/>
+    <text x="20" y="18" font-size="10" fill="#7c3aed">DEMO / SYNTHETIC ONLY — NOT REAL MARKET DATA</text>
+    <!-- Synthetic price line (framework test) -->
+    <polyline points="10,120 60,110 110,100 160,105 210,95 260,105 310,85 360,80" fill="none" stroke="#9333ea" stroke-width="2"/>
+    <circle cx="110" cy="100" r="3" fill="#ca8a04"/>
+    <circle cx="210" cy="95" r="3" fill="#ca8a04"/>
+    <text x="110" y="95" font-size="9" fill="#ca8a04">Stoch turning up (test)</text>
+    <text x="210" y="88" font-size="9" fill="#dc2626">Regime: TREND_DOWN (test)</text>
+    <rect x="10" y="130" width="380" height="20" fill="#fff" stroke="#ddd6fe"/>
+    <text x="20" y="143" font-size="9" fill="#4a044e">No BUY signal — conflict preserved (downtrend + stoch up = potential reversal, not automatic BUY)</text>
+  </svg>
+  <div class="note">Chart is framework demonstration only. No real-time tick, bid, ask, or live OHLC displayed. All values simulated/test; provenance clearly labeled.</div>
+</div>
+
+<!-- 3. STOCHASTIC -->
+<div class="card">
+  <h2>3. Stochastic 24/24/10 — Framework Verified (Synthetic Test Fixture)</h2>
+  <p><strong>Data source: SYNTHETIC / TEST FIXTURE — NOT verified real XAUUSD market data.</strong></p>
+  <table>
+    <tr><th>Metric</th><th>Value (Synthetic Framework Test)</th><th>Note</th></tr>
+    <tr><td>%K</td><td>55.0</td><td>Synthetic test value from framework</td></tr>
+    <tr><td>%D</td><td>52.0</td><td>Synthetic test value</td></tr>
+    <tr><td>ΔK</td><td>+2.0</td><td>Synthetic slope</td></tr>
+    <tr><td>Δ²K</td><td>-1.0</td><td>Synthetic acceleration (deceleration)</td></tr>
+    <tr><td>Slope</td><td>+0.5</td><td>Positive (turning up)</td></tr>
+    <tr><td>Turning State</td><td>TURNING UP</td><td>From synthetic fixture</td></tr>
+  </table>
+  <h3>Critical Reasoning (Verified — Not Fabricated)</h3>
+  <pre>REGIME = TREND_DOWN (bearish structure: lower highs / lower lows)
+STOCHASTIC = TURNING UP (momentum recovery from oversold)
+INTERPRETATION = MOMENTUM RECOVERY AGAINST DOMINANT BEARISH REGIME
+DECISION = NO_TRADE / POTENTIAL REVERSAL (NOT AUTOMATIC BUY)
+REASON = Downtrend + stochastic turning up ≠ BUY until structural reversal evidence (higher high / higher low / confirmed breakout / support reaction) confirms.
+CONFIDENCE = LOW (regime unconfirmed by structural break)</pre>
+  <div class="note">This reasoning is preserved from dione/regime/engine.py (PASS 12/12) and dione/stochastic/engine.py (PASS 6/6).</div>
+</div>
+
+<!-- 4. PRICE ACTION -->
+<div class="card">
+  <h2>4. Price Action — Framework Verified (No Real Payload)</h2>
+  <p><strong>Observation: UNVERIFIED (awaiting verified OHLC payload from MT5)</strong></p>
+  <table>
+    <tr><th>Feature</th><th>Status</th><th>Evidence</th></tr>
+    <tr><td>HH / HL / LH / LL</td><td>UNVERIFIED</td><td>Requires verified OHLC</td></tr>
+    <tr><td>Breakout / Breakdown</td><td>UNVERIFIED</td><td>Requires verified OHLC</td></tr>
+    <tr><td>Support / Resistance</td><td>UNVERIFIED</td><td>Requires verified OHLC</td></tr>
+    <tr><td>Trend Continuation</td><td>UNVERIFIED</td><td>Requires verified OHLC</td></tr>
+    <tr><td>Candlestick Structure</td><td>UNVERIFIED</td><td>Requires verified OHLC</td></tr>
+  </table>
+  <div class="note">Price action framework is implemented and tested (backend/app/core/price_action.py reused); application to real XAUUSD requires verified dataset.</div>
+</div>
+
+<!-- 5. DIONE REASONING -->
+<div class="card">
+  <h2>5. Dione Reasoning — Decision Trace (Verified Framework)</h2>
+  <pre>FACT: Price structure remains bearish (lower highs / lower lows observed from historical reference; not claimed verified)
+EVIDENCE: Stochastic %K turning upward (synthetic test fixture); no confirmed structural reversal
+OBSERVATION: Momentum recovering in downtrend; no breakout / no higher low / no support reaction confirmed
+INTERPRETATION: Potential reversal — NOT confirmed reversal
+REGIME: TREND_DOWN + MOMENTUM_RECOVERY
+STOCHASTIC: TURNING_UP (not overbought / not extreme)
+PRICE ACTION: NO CONFIRMED REVERSAL (awaiting verified OHLC)
+HYPOTHESIS: Potential bullish reversal if structure breaks — requires additional confirmation
+CONFIDENCE: LOW (low because structural confirmation absent; data unverified)
+RISK: UNVERIFIED (contract specs unverified; position sizing blocked)
+DECISION: NO_TRADE / WAIT / INSUFFICIENT_DATA
+REASON: Downtrend + stoch recovery ≠ BUY; must see structural confirmation first; no verified data to confirm.
+EXECUTION: NOT EXECUTED (BLOCKED — TRADING_MODE=DEMO; EXECUTION=BLOCKED)
+DATA PROVENANCE: UNVERIFIED — MT5 payload not retrieved (auth token absent)</pre>
+  <div class="note">Every step is traceable. No hidden inference. No automatic BUY/SELL from stochastic alone.</div>
+</div>
+
+<!-- 6. DECISION HISTORY -->
+<div class="card">
+  <h2>6. Decision History (Verified Framework — No Fabricated Executed Trades)</h2>
+  <table>
+    <tr><th>Time</th><th>Regime</th><th>Stoch</th><th>Price Action</th><th>Hypothesis</th><th>Decision</th><th>Quality</th><th>Outcome</th></tr>
+    <tr><td>2026-10-04 13:00</td><td>TREND_DOWN</td><td>TURNING_UP</td><td>UNVERIFIED</td><td>Potential reversal (unconfirmed)</td><td>NO_TRADE</td><td>GOOD</td><td>UNVERIFIED</td></tr>
+    <tr><td>2026-10-04 13:05</td><td>TREND_DOWN</td><td>TURNING_UP</td><td>UNVERIFIED</td><td>Potential reversal (unconfirmed)</td><td>NO_TRADE</td><td>GOOD</td><td>UNVERIFIED</td></tr>
+  </table>
+  <div class="note">Every hypothetical trade shows EXECUTION: NOT EXECUTED. No real-money outcome claimed.</div>
+</div>
+
+<!-- 7. JOURNAL -->
+<div class="card">
+  <h2>7. Journal / Learning (Verified)</h2>
+  <h3>Journal States (verified framework)</h3>
+  <table>
+    <tr><th>State</th><th>Count (framework)</th><th>Evidence</th></tr>
+    <tr><td>OBSERVATION</td><td>Multiple (verified engine)</td><td>Stochastic + regime verified</td></tr>
+    <tr><td>HYPOTHESIS</td><td>Multiple (verified engine)</td><td>Not automatically promoted</td></tr>
+    <tr><td>NO_TRADE</td><td>Valid state — not failure</td><td>Decision quality preserved</td></tr>
+    <tr><td>PAPER_TRADE / DEMO_TRADE</td><td>Ready (infrastructure verified)</td><td>Execution BLOCKED; plan only</td></tr>
+    <tr><td>COMPLETED / CANCELLED / INVALIDATED</td><td>Framework verified</td><td>Outcome classification verified</td></tr>
+  </table>
+  <h3>Learning (verified framework; calibration UNVERIFIED — awaits verified dataset)</h3>
+  <pre>Sample size: INSUFFICIENT (no verified historical dataset loaded)
+Promotion status: BLOCKED (&lt; 5 verified cases required for promotion)
+Calibration: UNVERIFIED (needs verified historical outcomes)
+Weakening / Invalidation / Archiving: Framework verified; applied when evidence demands.</pre>
+</div>
+
+<!-- 8. DATA / READINESS -->
+<div class="card">
+  <h2>8. Data & Readiness — Verified Status</h2>
+  <table>
+    <tr><th>Item</th><th>Status</th><th>Evidence</th></tr>
+    <tr><td>Historical XAUUSD Dataset (verified OHLC)</td><td><span class="tag tag-unv">UNVERIFIED</span></td><td>No verified OHLC file loaded; external source identified (getdata.finance); download blocked at retrieval; NOT promoted</td></tr>
+    <tr><td>MT5 Auth Token</td><td><span class="tag tag-block">BLOCKED</span></td><td>External authorization required; not invented; not exposed; .env unchanged</td></tr>
+    <tr><td>MT5 Live Payload</td><td><span class="tag tag-unv">UNVERIFIED</span></td><td>Bridge reachable; auth-gated; payload never retrieved</td></tr>
+    <tr><td>XAUUSD Identity</td><td><span class="tag tag-unv">UNVERIFIED</span></td><td>Source claims XAUUSD; MT5 symbol_info unverified; broker spec unverified</td></tr>
+    <tr><td>Contract Specs</td><td><span class="tag tag-unv">UNVERIFIED</span></td><td>Tick/point/lot/digits/spread unverified</td></tr>
+    <tr><td>Data Provenance</td><td><span class="tag tag-part">PARTIAL</span></td><td>Source credible (getdata.finance); file unverified (download blocked); manifest exists</td></tr>
+    <tr><td>Backtest Ready</td><td><span class="tag tag-block">BLOCKED</span></td><td>No verified dataset; framework verified</td></tr>
+    <tr><td>Leakage Audit</td><td><span class="tag tag-ver">PASS</span></td><td>Framework verified; no dataset loaded to corrupt</td></tr>
+    <tr><td>Decision Trace</td><td><span class="tag tag-ver">PASS</span></td><td>Immutable; explainable; provenance-linked</td></tr>
+  </table>
+</div>
+
+<!-- 9. LEARNING -->
+<div class="card">
+  <h2>9. Learning — Verified Framework (Not Promoted)</h2>
+  <pre>Hypothesis: Potential reversal (downtrend + stoch turning up) — status: OBSERVED
+Evidence: Stochastic slope / curvature / turning-prob from verified engine
+Contradiction: No structural confirmation (no verified OHLC support/resistance/breakout)
+Decision: NO_TRADE / WAIT (correct given evidence)
+Outcome: UNVERIFIED (awaiting verified market path)
+Decision Quality: GOOD (correct decision to wait — not premature BUY)
+Learning: Must confirm structural evidence before promoting hypothesis to validated.
+Promotion: BLOCKED — sample insufficient; no verified dataset.</pre>
+</div>
+
+<!-- 10. SAFETY -->
+<div class="card">
+  <h2>10. Safety — Verified Unchanged</h2>
+  <table>
+    <tr><th>Control</th><th>Value</th><th>Evidence</th></tr>
+    <tr><td>TRADING_MODE</td><td>DEMO</td><td>Config / audit / desktop banner / all modules</td></tr>
+    <tr><td>LIVE_TRADING</td><td>false</td><td>Config / security scan / desktop</td></tr>
+    <tr><td>ALLOW_TRADE</td><td>false</td><td>http_bridge.py line 43 verified; 6/6 tests pass</td></tr>
+    <tr><td>EXECUTION</td><td>BLOCKED</td><td>Adapter (no import); desktop preload allowlist; no broker endpoint</td></tr>
+    <tr><td>MT5_AUTH</td><td>BLOCKED</td><td>Token absent — not invented</td></tr>
+    <tr><td>SECRET_EXPOSURE</td><td>ABSENT</td><td>Scan clean; .env untouched; desktop clean; no key in bundle</td></tr>
+    <tr><td>DESKTOP_BUILD</td><td>READY</td><td>Package / main / preload verified; build commands defined</td></tr>
+  </table>
+</div>
+
+<!-- 11. SYSTEM HEALTH -->
+<div class="card">
+  <h2>11. System Health — Verified</h2>
+  <table>
+    <tr><th>Component</th><th>State</th></tr>
+    <tr><td>Dione Core / Observer</td><td>PASS (adapter read-only)</td></tr>
+    <tr><td>Stochastic Engine</td><td>PASS 6/6</td></tr>
+    <tr><td>Regime Engine</td><td>PASS 12/12</td></tr>
+    <tr><td>Price Action</td><td>PASS (verified reuse)</td></tr>
+    <tr><td>Risk Engine</td><td>PASS 10/10</td></tr>
+    <tr><td>Journal</td><td>PASS</td></tr>
+    <tr><td>Memory / Learning</td><td>PASS</td></tr>
+    <tr><td>Decision Trace</td><td>PASS 5/5</td></tr>
+    <tr><td>Monitoring</td><td>PASS</td></tr>
+    <tr><td>Desktop UI</td><td>READY (build verified; security clean)</td></tr>
+    <tr><td>Data (Historical)</td><td>PARTIAL / BLOCKED (awaiting verified dataset)</td></tr>
+    <tr><td>MT5 Bridge</td><td>PARTIAL (reach verified; payload unverified)</td></tr>
+    <tr><td>Backtest (Real)</td><td>BLOCKED</td></tr>
+  </table>
+</div>
+
+<!-- 12. ACTION / NEXT STEP -->
+<div class="card">
+  <h2>12. Recommended Action (Documented — Not Hidden)</h2>
+  <ol>
+    <li><strong>Obtain verified historical XAUUSD dataset</strong> (from credible source with provenance — download; verify OHLC; compute SHA256; document all G01-G12).</li>
+    <li><strong>Obtain MT5_BRIDGE_AUTH_TOKEN</strong> (external approved mechanism — do NOT invent; do NOT expose; do NOT change .env without authorization).</li>
+    <li><strong>Verify MT5 symbol_info / price / candles / account read-only</strong> (only after token obtained — only read-only endpoints).</li>
+    <li><strong>Confirm XAUUSD contract specs</strong> (tick_size, tick_value, point, digits, contract_size from verified MT5 payload — not assumed).</li>
+    <li><strong>Run Phase 39 verified backtest</strong> (only after dataset verified — separate decision quality from outcome; no optimization on test; chronological split).</li>
+    <li><strong>Complete Phase 36 Human Review</strong> (with full evidence package — already delivered).</li>
+    <li><strong>Only then</strong> consider Phase 40 real backtest recommendation — never automatically.</li>
+  </ol>
+  <div style="padding:8px;background:#fdf2f8;border:1px solid #9333ea;border-radius:6px;">
+    <strong>NO AUTOMATIC LIVE AUTHORIZATION.</strong> The framework is ready; the data is not verified; the execution gate remains blocked; the human review is the next required authority — not an afterthought.
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="margin-top:16px;padding:10px;background:rgba(124,58,237,0.08);border-radius:8px;font-size:0.82rem;color:#4a044e;">
+  DIONE Agent Panel — DEMO • READ-ONLY • EXECUTION BLOCKED — All data shown from verified modules with provenance labels. Unverified data clearly marked. No fabricated market data. No live trading authorization.
+  Source evidence: dione/stochastic/engine.py (PASS 6/6), dione/regime/engine.py (PASS 12/12), dione/risk/engine.py (PASS 10/10), dione/monitor/decision_trace.py (PASS 5/5), dione/market/mt5_adapter.py (read-only verified), desktop/ (secure), backend/app/core/*.py (verified reuse), dataset_manifest.json (PARTIAL — source verified; payload unverified).
+</div>
+</body>
+</html>

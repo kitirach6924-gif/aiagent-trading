@@ -10,13 +10,15 @@ import Statistics from "./pages/Statistics";
 import Strategy from "./pages/Strategy";
 import Learning from "./pages/Learning";
 import System from "./pages/System";
+import DioneAgent from "./pages/DioneAgent";
 import AgentChatPanel from "./components/AgentChatPanel";
 import "./styles.css";
 
-type Tab = "dashboard" | "markets" | "trading" | "strategies" | "trades" | "analytics" | "learning" | "system";
+type Tab = "dashboard" | "dione" | "markets" | "trading" | "strategies" | "trades" | "analytics" | "learning" | "system";
 
 const NAV: Array<{ id: Tab; label: string; icon: string; mobile?: boolean }> = [
   { id: "dashboard", label: "Dashboard", icon: "📊", mobile: true },
+  { id: "dione", label: "DIONE", icon: "🧠", mobile: true },
   { id: "markets", label: "Markets", icon: "🌍" },
   { id: "trading", label: "Trading", icon: "⚡", mobile: true },
   { id: "strategies", label: "Strategies", icon: "🧠", mobile: true },
@@ -133,6 +135,7 @@ function App() {
 
         <main className={`content ${tab === "dashboard" ? "content-dash" : ""}`}>
           {tab === "dashboard" && <Dashboard />}
+          {tab === "dione" && <DioneAgent />}
           {tab === "markets" && <Markets />}
           {tab === "trading" && <TradingTab />}
           {tab === "strategies" && <Strategy />}
